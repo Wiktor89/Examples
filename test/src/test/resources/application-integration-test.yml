@@ -1,0 +1,25 @@
+logging:
+  level:
+    liquibase: DEBUG
+    org.springframework.test.context.jdbc: TRACE
+spring:
+  liquibase:
+    url: jdbc:tc:postgresql:12.7:///test?currentSchema=db
+    default-schema: db
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:postgresql:12.7:///test?currentSchema=db
+    type: com.zaxxer.hikari.HikariDataSource
+    initialization-mode: always
+    schema: classpath:/db/init-test.sql
+    hikari:
+      connection-timeout: 20000
+      login-timeout: 8000
+      minimum-idle: 1
+      maximum-pool-size: 1
+      pool-name: test-pool
+      connection-test-query: SELECT 1L
+      validation-timeout: 20000
+      connection-init-sql: SELECT 1L
+      jdbc-url: jdbc:tc:postgresql:12.7:///test?currentSchema=db
+      schema: db

@@ -1,0 +1,23 @@
+spring:
+  liquibase:
+    change-log: classpath:/db/changelog/changelog.yml
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=db
+    default-schema: db
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=db
+    username: root
+    password: root
+    schema: classpath:/db/init-test.sql
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-timeout: 20000
+      login-timeout: 8000
+      minimum-idle: 1
+      maximum-pool-size: 5
+      pool-name: ${server.servlet.application-display-name}-pool
+      connection-test-query: SELECT 1L
+      validation-timeout: 20000
+      connection-init-sql: SELECT 1L
+      jdbc-url: jdbc:postgresql://localhost:5432/postgres?currentSchema=db
+      schema: db
