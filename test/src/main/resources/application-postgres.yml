@@ -8,7 +8,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=db
     username: root
     password: root
-    schema: classpath:/db/init-test.sql
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       connection-timeout: 20000

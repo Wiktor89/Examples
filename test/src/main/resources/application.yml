@@ -1,7 +1,16 @@
+logging:
+  level:
+    liquibase: DEBUG
+    org.springframework.test.context.jdbc: TRACE
 server:
   servlet:
     application-display-name: test-example
 spring:
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      platform: postgres
   profiles:
     active: postgres
   liquibase:
@@ -15,8 +24,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=db
     username: root
     password: root
-    schema: classpath:/db/init-test.sql
-    initialization-mode: always
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
       connection-timeout: 20000
