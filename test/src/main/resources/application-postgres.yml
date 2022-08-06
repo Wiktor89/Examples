@@ -1,8 +1,15 @@
 spring:
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      platform: postgres
   liquibase:
     change-log: classpath:/db/changelog/changelog.yml
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=db
     default-schema: db
+    liquibase-schema: db
+    enabled: on
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=db
@@ -21,3 +28,7 @@ spring:
       connection-init-sql: SELECT 1L
       jdbc-url: jdbc:postgresql://localhost:5432/postgres?currentSchema=db
       schema: db
+logging:
+  level:
+#    org.springframework: TRACE
+    org.springframework.jdbc.datasourceinit: TRACE
