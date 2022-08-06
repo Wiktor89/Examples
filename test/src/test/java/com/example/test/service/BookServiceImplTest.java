@@ -1,6 +1,6 @@
 package com.example.test.service;
 
-import com.example.AbstractIntegrationTest;
+import com.example.test.AbstractIntegrationTest;
 import com.example.test.BookRepository;
 import com.example.test.entity.Book;
 import org.junit.jupiter.api.DisplayName;
