@@ -1,7 +1,8 @@
 logging:
   level:
-    liquibase: DEBUG
-    org.springframework.test.context.jdbc: TRACE
+#    liquibase: DEBUG
+#    org.springframework.test.context.jdbc: TRACE
+    org.springframework.jdbc.datasource.init: TRACE
 server:
   servlet:
     application-display-name: test-example

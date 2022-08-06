@@ -23,6 +23,7 @@
 
     <modules>
         <module>test</module>
+        <module>r2dbc</module>
     </modules>
 
     <build>
