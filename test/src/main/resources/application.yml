@@ -11,11 +11,6 @@ server:
 spring:
   show:
     config: true
-#  sql:
-#    init:
-#      mode: always
-#      platform: postgres
-#      schema-locations: classpath:schema.sql
   profiles:
     active: postgres
   datasource:
@@ -30,4 +25,3 @@ spring:
       connection-test-query: SELECT 1L
       validation-timeout: 20000
       connection-init-sql: SELECT 1L
-#      schema: db
