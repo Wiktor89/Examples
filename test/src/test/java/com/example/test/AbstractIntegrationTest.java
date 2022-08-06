@@ -1,4 +1,4 @@
-package com.example;
+package com.example.test;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

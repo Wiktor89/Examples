@@ -1,33 +1,13 @@
 spring:
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:schema.sql
-      platform: postgres
+  datasource:
+    url: jdbc:postgresql://localhost:5431/postgres?currentSchema=db
+    username: postgres
+    password: postgres
   liquibase:
-    change-log: classpath:/db/changelog/changelog.yml
-    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=db
+    change-log: classpath:/db/changelog/db.changelog_schema_1.0.0.yaml
+    url: jdbc:postgresql://localhost:5431/postgres?currentSchema=db
     default-schema: db
     liquibase-schema: db
-    enabled: on
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=db
-    username: root
-    password: root
-    type: com.zaxxer.hikari.HikariDataSource
-    hikari:
-      connection-timeout: 20000
-      login-timeout: 8000
-      minimum-idle: 1
-      maximum-pool-size: 5
-      pool-name: ${server.servlet.application-display-name}-pool
-      connection-test-query: SELECT 1L
-      validation-timeout: 20000
-      connection-init-sql: SELECT 1L
-      jdbc-url: jdbc:postgresql://localhost:5432/postgres?currentSchema=db
-      schema: db
-logging:
-  level:
-#    org.springframework: TRACE
-    org.springframework.jdbc.datasourceinit: TRACE
+    enabled: true
+    user: postgres
+    password: postgres

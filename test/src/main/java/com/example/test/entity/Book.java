@@ -11,10 +11,11 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "id")
 @RequiredArgsConstructor
-@Entity
+@Entity(name = Book.TABLE_NAME)
 public class Book {
+    public static final String TABLE_NAME = "book";
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_id_seq")

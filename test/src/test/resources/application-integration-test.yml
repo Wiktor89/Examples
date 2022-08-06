@@ -1,19 +1,9 @@
 spring:
   liquibase:
-    url: jdbc:tc:postgresql:12.7:///test?currentSchema=db
+#    url: jdbc:tc:postgresql:12.7:///integration-tests-db?currentSchema=db&TC_INITSCRIPT=postgresql.sql
+    change-log: classpath:/db/changelog/db.changelog_schema_1.0.0.yaml
     default-schema: db
+    liquibase-schema: db
   datasource:
+#    url: jdbc:tc:postgresql:12.7:///integration-tests-db?currentSchema=db&TC_INITSCRIPT=postgresql.sql
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:postgresql:12.7:///test?currentSchema=db
-    type: com.zaxxer.hikari.HikariDataSource
-    hikari:
-      connection-timeout: 20000
-      login-timeout: 8000
-      minimum-idle: 1
-      maximum-pool-size: 1
-      pool-name: test-pool
-      connection-test-query: SELECT 1L
-      validation-timeout: 20000
-      connection-init-sql: SELECT 1L
-      jdbc-url: jdbc:tc:postgresql:12.7:///test?currentSchema=db
-      schema: db
