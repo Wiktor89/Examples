@@ -2,7 +2,6 @@ package com.example.rabbitmq.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.CustomExchange;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.HeadersExchange;
@@ -126,5 +125,13 @@ public class RabbitMqConfig {
                 .to(headersExchange())
                 .whereAny(headers)
                 .match();
+    }
+
+    public String getQueue() {
+        return queue;
+    }
+
+    public String getExchange() {
+        return exchange;
     }
 }

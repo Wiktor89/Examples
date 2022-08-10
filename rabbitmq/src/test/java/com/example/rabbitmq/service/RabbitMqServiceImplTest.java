@@ -1,93 +1,93 @@
 package com.example.rabbitmq.service;
 
+import com.example.rabbitmq.AbstractIntegrationTest;
 import com.example.rabbitmq.dto.MessageDto;
 import com.example.rabbitmq.service.rabbit.enm.TypeHandler;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.system.OutputCaptureRule;
-import org.springframework.boot.test.util.TestPropertyValues;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.springframework.boot.test.system.CapturedOutput;
 import org.testcontainers.shaded.org.awaitility.Awaitility;
-import org.testcontainers.shaded.org.awaitility.core.ConditionFactory;
 import org.testcontainers.shaded.org.hamcrest.CoreMatchers;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-@Testcontainers
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ContextConfiguration(initializers = RabbitMqServiceImplTest.Initializer.class)
-public class RabbitMqServiceImplTest {
+
+public class RabbitMqServiceImplTest extends AbstractIntegrationTest {
 
     @Autowired
     private RabbitMqFacade rabbitMqFacade;
 
-    @Container
-    public static GenericContainer rabbit = new GenericContainer("rabbitmq:3-management")
-            .withExposedPorts(5672);
-
-//    @Rule
-    public OutputCaptureRule outputCaptureRule = new OutputCaptureRule();
-
-    public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-        @Override
-        public void initialize(ConfigurableApplicationContext applicationContext) {
-            TestPropertyValues testPropertyValues = TestPropertyValues.of(
-                    "spring.rabbit.host=" + rabbit.getHost(),
-                    "spring.rabbit.port=" + rabbit.getMappedPort(5672));
-            testPropertyValues.applyTo(applicationContext);
-        }
-    }
-
     @Test
     @DisplayName("Test exchange type fanout")
-    public void fanout() {
-        MessageDto messageDto = new MessageDto();
-        messageDto.setPayload("test".getBytes(StandardCharsets.UTF_8));
-        messageDto.setTypeHandler(TypeHandler.FANOUT);
-        rabbitMqFacade.send(messageDto);
-        ConditionFactory await = Awaitility.await();
-        ConditionFactory conditionFactory = await.atMost(1, TimeUnit.SECONDS);
-        conditionFactory.until(isMessageConsumed(), CoreMatchers.is(true));
-        Assertions.assertFalse(Boolean.FALSE);
-    }
-
-    private Callable<Boolean> isMessageConsumed() {
-        return () -> {
-            return outputCaptureRule.toString().contains("Test");
-        };
+    public void fanout(CapturedOutput output) {
+        rabbitMqFacade.send(createMessage(TypeHandler.FANOUT, "fanout UP"));
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(isMessageConsumed(output, "fanout UP"), CoreMatchers.is(true));
     }
 
     @Test
     @DisplayName("Test exchange type direct")
-    void direct() {
+    void direct(CapturedOutput output) {
+        rabbitMqFacade.send(createMessage(TypeHandler.DIRECT, "direct UP"));
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(isMessageConsumed(output, "direct UP"), CoreMatchers.is(true));
     }
 
     @Test
     @DisplayName("Test exchange type topic")
-    void topic() {
+    void topic(CapturedOutput output) {
+        rabbitMqFacade.send(createMessage(TypeHandler.TOPIC, "topic UP"));
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(isMessageConsumed(output, "topic UP"), CoreMatchers.is(true));
     }
 
     @Test
-    @DisplayName("Test exchange type header")
-    void header() {
+    @DisplayName("Test exchange type header: x-match = all")
+    void header_0(CapturedOutput output) {
+        MessageDto message = createMessage(TypeHandler.HEADER, "x-match = all UP");
+        Map<String, String> headers = new HashMap<>();
+        headers.put("x-match", "all");
+        headers.put("h1", "Header1");
+        headers.put("h2", "Header2");
+        message.setHeaders(headers);
+        rabbitMqFacade.send(message);
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(isMessageConsumed(output, "x-match = all UP"), CoreMatchers.is(true));
     }
 
     @Test
-    @DisplayName("Test exchange type consistent hashing")
-    void consistentHashing() {
+    @DisplayName("Test exchange type header: x-match = any Header1")
+    void header_1(CapturedOutput output) {
+        MessageDto message = createMessage(TypeHandler.HEADER, "x-match = any Header1");
+        Map<String, String> headers = new HashMap<>();
+        headers.put("x-match", "any");
+        headers.put("h1", "Header1");
+        message.setHeaders(headers);
+        rabbitMqFacade.send(message);
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(isMessageConsumed(output, "x-match = any Header1"), CoreMatchers.is(true));
+    }
+
+    @Test
+    @DisplayName("Test exchange type header: x-match = any Header2")
+    void header_2(CapturedOutput output) {
+        MessageDto message = createMessage(TypeHandler.HEADER, "x-match = any Header2");
+        Map<String, String> headers = new HashMap<>();
+        headers.put("x-match", "any");
+        headers.put("h2", "Header2");
+        message.setHeaders(headers);
+        rabbitMqFacade.send(message);
+        Awaitility.await().atMost(1, TimeUnit.SECONDS).until(isMessageConsumed(output, "x-match = any Header2"), CoreMatchers.is(true));
+    }
+
+    private MessageDto createMessage(TypeHandler typeHandler, String message) {
+        MessageDto messageDto = new MessageDto();
+        messageDto.setPayload(message.getBytes(StandardCharsets.UTF_8));
+        messageDto.setTypeHandler(typeHandler);
+        return messageDto;
+    }
+
+    private Callable<Boolean> isMessageConsumed(CapturedOutput output, String message) {
+        return () -> output.toString().contains(message);
     }
 }

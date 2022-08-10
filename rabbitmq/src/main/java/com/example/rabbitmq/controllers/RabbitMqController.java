@@ -6,6 +6,7 @@ import com.example.rabbitmq.service.rabbit.enm.TypeHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +26,12 @@ public class RabbitMqController {
 
     private final RabbitMqFacade rabbitMqFacade;
     private final ObjectMapper mapper;
+    @Value("${spring.repeat.count}")
+    private int repeat;
 
     @SneakyThrows
     @PostMapping("/send")
     public ResponseEntity<String> sendRabbit(@RequestBody MessageDto message) {
-        String s = mapper.writeValueAsString(message);
-        System.out.println(s);
         rabbitMqFacade.send(message);
         return ResponseEntity.ok("Ok send message");
     }
@@ -39,10 +40,10 @@ public class RabbitMqController {
     @EventListener(ApplicationReadyEvent.class)
     public void ping() {
         MessageDto message = new MessageDto();
-        message.setPayload("Test".getBytes(StandardCharsets.UTF_8));
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < repeat; i++) {
             Arrays.stream(TypeHandler.values()).forEach(val -> {
                 message.setTypeHandler(val);
+                message.setPayload(val.name().getBytes(StandardCharsets.UTF_8));
                 sendRabbit(message);
             });
             TimeUnit.SECONDS.sleep(1);
