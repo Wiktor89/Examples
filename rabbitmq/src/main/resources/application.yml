@@ -1,0 +1,11 @@
+logging:
+  level:
+    ROOT: INFO
+
+spring:
+  rabbitmq:
+    username: root
+    password: root
+    template:
+      default-receive-queue: test.queue
+      exchange: test.exchange
