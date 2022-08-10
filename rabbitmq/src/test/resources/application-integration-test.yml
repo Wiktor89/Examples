@@ -1,3 +1,7 @@
 logging:
   level:
     org.testcontainers.containers: INFO
+
+spring:
+  repeat:
+    count: -1

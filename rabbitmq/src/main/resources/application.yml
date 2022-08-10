@@ -3,6 +3,8 @@ logging:
     ROOT: INFO
 
 spring:
+  repeat:
+    count: 1
   rabbitmq:
     username: root
     password: root
