@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: dev
+      author: va
+      changes:
+        - createTable:
+            tableName: book
+            remarks: books
+            columns:
+              - column:
+                  name: id
+                  type: integer
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: book_pk
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  remarks: name book
+                  constraints:
+                    unique: true
+                    uniqueConstraintName: name_uq
+                    nullable: false
+              - column:
+                  name: isbn
+                  type: varchar(255)
+                  remarks: isbn book
+                  constraints:
+                    nullable: false

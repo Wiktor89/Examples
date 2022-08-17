@@ -3,7 +3,6 @@ package com.example.rabbitmq.controllers;
 import com.example.rabbitmq.dto.MessageDto;
 import com.example.rabbitmq.service.RabbitMqFacade;
 import com.example.rabbitmq.service.rabbit.enm.TypeHandler;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +24,6 @@ import java.util.concurrent.TimeUnit;
 public class RabbitMqController {
 
     private final RabbitMqFacade rabbitMqFacade;
-    private final ObjectMapper mapper;
     @Value("${spring.repeat.count}")
     private int repeat;
 

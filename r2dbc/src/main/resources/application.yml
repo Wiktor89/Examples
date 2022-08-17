@@ -1,1 +1,22 @@
-
+spring:
+  show:
+    config: true
+  liquibase:
+    password: postgres
+    user: postgres
+    change-log: classpath:/changelog/changelog.yml
+    default-schema: db
+    liquibase-schema: db
+    enabled: true
+    url: jdbc:postgresql://localhost:5431/postgres?currentSchema=db
+  r2dbc:
+    password: postgres
+    url: r2dbc:postgresql://localhost:5431/postgres?currentSchema=db
+    username: postgres
+logging:
+  level:
+    #    ROOT: TRACE
+    liquibase: TRACE
+    net.lbruun.springboot.preliquibase: TRACE
+#    org.springframework.test.context.jdbc: TRACE
+#    org.springframework.jdbc.datasource.init: TRACE
