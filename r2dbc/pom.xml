@@ -12,20 +12,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>r2dbc</name>
 	<description>r2dbc</description>
-	<properties>
-		<java.version>17</java.version>
-		<postgres-version>42.3.0</postgres-version>
-		<r2dbc2-pool>0.9.1.RELEASE</r2dbc2-pool>
-		<r2dbc-postgresql>0.8.12.RELEASE</r2dbc-postgresql>
-		<liquibase-version>3.10.3</liquibase-version>
-		<liquibase-version>3.10.3</liquibase-version>
-	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>${postgres-version}</version>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-r2dbc</artifactId>
@@ -33,21 +20,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-core</artifactId>
-			<version>${liquibase-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.projectreactor</groupId>
@@ -60,37 +32,9 @@
 			<version>${r2dbc2-pool}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<version>1.16.2</version>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>1.16.2</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
 			<groupId>io.r2dbc</groupId>
 			<artifactId>r2dbc-postgresql</artifactId>
 			<version>${r2dbc-postgresql}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.liquibase</groupId>
-			<artifactId>liquibase-core</artifactId>
-			<version>${liquibase-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.lbruun.springboot</groupId>
-			<artifactId>preliquibase-spring-boot-starter</artifactId>
-			<version>1.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
